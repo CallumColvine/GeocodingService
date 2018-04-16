@@ -1,23 +1,13 @@
-from geocoder_handler import Geocoder
+from geocoder_handler import GeocoderHandler
 from request_server import serverLoop
 import logging
-logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
-
-
-''' 
-ToDo:
-- Call Here geocoding services                          DONE
-- Call Google geocoding stuff                           DONE
-- Parse input arguments for command line interface      DONE
-- Write picking method between Here and Google results  IN PROGRESS
-- Enable RESTful calls on app                           TODO
-'''
 
 
 def main():
     logging.info("Geocoder program started")
-    geocoder = Geocoder()
+    geocoder = GeocoderHandler()
     geocoder.parseArgs()
+    # Starts up the RestHTTPRequestHandler infinite loop to listen for API calls
     if geocoder.runAsServer:
         serverLoop()
         exit()
@@ -30,5 +20,5 @@ def main():
     else:
         print ("No latitude or longitude were found for the input address")
 
-if __name__ == "__main__": 
+if __name__ == "__main__":
     main()

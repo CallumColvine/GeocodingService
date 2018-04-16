@@ -1,11 +1,8 @@
 from generic_geocoder import GenericGeocoder
+import json
 import urllib.parse
 import urllib.request
-import json
-from copy import deepcopy
 
-import logging
-logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
 
 # Retrieved from https://developers.google.com/maps/documentation/geocoding/start
 GOOGLE_API_KEY = "AIzaSyA-YjJR_ILnJurVXGpO2Rtk6ToE6P02djs"
@@ -24,9 +21,7 @@ class GoogleGeocoder(GenericGeocoder):
         request = urllib.request.Request(self.url)
         with urllib.request.urlopen(request) as response:
             page = response.read()
-            # page = page.decode('utf8').replace("'", '"')
             page = json.loads(page)
-            # print (page)
             location = page.get("results", {})
             if len(location) > 0:
                 location = location[0].get("geometry", {}).get("location")

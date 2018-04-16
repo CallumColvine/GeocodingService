@@ -1,11 +1,10 @@
+from copy import deepcopy
 from generic_geocoder import GenericGeocoder
+import json
+import logging
 import urllib.parse
 import urllib.request
-import json
-from copy import deepcopy
 
-import logging
-logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
 
 # Retrieved from https://developer.here.com/projects
 HERE_APP_ID = "T8Yh97KaSNVLi0pA2AXi"

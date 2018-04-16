@@ -1,8 +1,8 @@
 import logging
 
-logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
+logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.INFO)
 
-''' 
+'''
 GenericGeocoder is used as an interface for the Google/Here geocoders
 '''
 class GenericGeocoder(object):

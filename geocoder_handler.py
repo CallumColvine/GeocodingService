@@ -1,24 +1,21 @@
-from here_geocoder import HereGeocoder
 from google_geocoder import GoogleGeocoder
+from here_geocoder import HereGeocoder
 import argparse
-import sys
-import json
-
 import logging
-logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
+import sys
 
 
-
-class Geocoder(object):
+class GeocoderHandler(object):
     '''
     inputAddress is a string including spaces
     mode specifies how the program should work
-        - firstResult means use the first result from Here/Google as authority
-        - bestMatch means use the address that both Here/Google come up with
+        - firstResult mode uses the first result from Here/Google as authority
+        - bestMatch is a speculative mode that attempts to find common results
+        from several sources
         ...
     '''
     def __init__(self):
-        self.modeList = ['firstResult', 'bestMatch'] 
+        self.modeList = ['firstResult', 'bestMatch']
         self.address = None
         self.mode = self.modeList[0]
         self.hereResults = None
@@ -33,10 +30,10 @@ class Geocoder(object):
         hereGeocoder.formatRequest()
         hereGeocoder.getLatLon()
         self.hereResults = [hereGeocoder.lat, hereGeocoder.lon]
-        logging.info("Results from Here API lat: {} lon: {}"\
-            .format(str(self.hereResults[0]), str(self.hereResults[1])))
+        logging.info("Results from Here API lat: {} lon: {}".format(
+                str(self.hereResults[0]), str(self.hereResults[1])))
 
-    def callGoogleGeocode(self, formatAddress=False):
+    def callGoogleGeocode(self, formatAddress=True):
         googleGeocoder = GoogleGeocoder(self.address)
         if formatAddress:
             googleGeocoder.formatAddress()
@@ -45,8 +42,8 @@ class Geocoder(object):
         googleGeocoder.formatRequest()
         googleGeocoder.getLatLon()
         self.googleResults = [googleGeocoder.lat, googleGeocoder.lon]
-        logging.info("Results from Google API lat: {} lon: {}"\
-            .format(str(self.googleResults[0]), str(self.googleResults[1])))
+        logging.info("Results from Google API lat: {} lon: {}".format(
+                str(self.googleResults[0]), str(self.googleResults[1])))
 
     def compareAndPickResults(self):
         if self.mode == 'firstResult':
@@ -57,10 +54,9 @@ class Geocoder(object):
             else:
                 return None
         elif self.mode == 'bestMatch':
-            # Concept mode. Would take ALL results from API returns from Here 
+            # Concept mode. Would take ALL results from API returns from Here
             # and Google and return the closest match
             pass
-
 
     def parseArgs(self):
         parser = argparse.ArgumentParser()
@@ -70,7 +66,7 @@ class Geocoder(object):
             help='Boolean parameter specifying if the program should be run as \
                     a server',
             action='store_true'
-        )        
+        )
         parser.add_argument(
             '-a',
             '--address',
@@ -86,10 +82,10 @@ class Geocoder(object):
         )
         args = parser.parse_args()
         self.runAsServer = args.server
-        print (self.runAsServer)
         self.address = args.address
         if (self.address is None or self.address == "") and not self.runAsServer:
             sys.exit("Please provide a valid address")
         self.mode = args.mode
         logging.info("Parsed address: {}".format(self.address))
         logging.info("Parsed mode: {}".format(self.mode))
+        logging.info("Parsed run as server {}".format(self.runAsServer))
