@@ -27,6 +27,8 @@ class GoogleGeocoder(GenericGeocoder):
             # page = page.decode('utf8').replace("'", '"')
             page = json.loads(page)
             # print (page)
-            location = page.get("results", {})[0].get("geometry", {}).get("location")
-            self.lat = location.get("lat")
-            self.lon = location.get("lng")
+            location = page.get("results", {})
+            if len(location) > 0:
+                location = location[0].get("geometry", {}).get("location")
+                self.lat = location.get("lat")
+                self.lon = location.get("lng")

@@ -15,9 +15,9 @@ class GenericGeocoder(object):
         self.lon = 0
 
     def formatAddress(self):
-        logging.debug("Inputted address is: {}".format(self.unformattedAddress))
         # Spaces -> '+'
         # Commas -> '%2C'
+        logging.debug("Inputted address is: {}".format(self.unformattedAddress))
         self.formattedAddress = self.unformattedAddress.replace(" ", "+")
         self.formattedAddress = self.formattedAddress.replace(",", "%2C")
         logging.debug("Formatted address is: {}".format(self.formattedAddress))

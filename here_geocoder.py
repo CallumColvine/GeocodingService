@@ -25,15 +25,14 @@ class HereGeocoder(GenericGeocoder):
         request = urllib.request.Request(self.url)
         with urllib.request.urlopen(request) as response:
             page = response.read()
-            # logging.debug("Here response: {}".format(page))            
-            # page = page.decode('utf8').replace("'", '"')
-            # page = page.decode('utf8')
             page = json.loads(page)
             logging.debug("Here response: {}".format(page))
             view = page.get("Response", {}).get("View", [])
             if len(view) > 0:
-                points = view[0].get('Result', [])[0].get("Location", {})\
-                    .get("NavigationPosition")[0]
-                logging.debug(points)
-                self.lat = deepcopy(points.get("Latitude"))
-                self.lon = deepcopy(points.get("Longitude"))
+                points = view[0].get('Result', [])
+                if len(points) > 0:
+                    points = points[0].get("Location", {}).get("NavigationPosition")
+                    if len(points) > 0:
+                        points = points[0]
+                        self.lat = deepcopy(points.get("Latitude"))
+                        self.lon = deepcopy(points.get("Longitude"))
