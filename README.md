@@ -1,5 +1,5 @@
 # GeocodingService
-##Small program designed to retrieve lat and long values based on an address.
+## Small program designed to retrieve lat and long values based on an address.
 
 This program can be run locally through the command line, or called as a RESTful API when running as a server.
 
@@ -12,7 +12,7 @@ sudo apt-get update
 sudo apt-get install python3.6
 ```
 
-##To Run:
+## To Run:
 
 Running locally via the command line:
 ```
